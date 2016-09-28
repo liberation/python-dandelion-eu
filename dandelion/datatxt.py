@@ -63,3 +63,6 @@ class ClassifierCrud(BaseDandelionRequest):
         return self.do_request(
             {}, ('li', 'models', 'v1'), method='get'
         )
+
+    def _get_uri_tokens(self):
+        return 'datatxt',
