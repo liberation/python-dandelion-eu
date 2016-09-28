@@ -40,28 +40,28 @@ class ClassifierCrud(BaseDandelionRequest):
 
     def read(self, model_id, **params):
         return self.do_request(
-            dict(params, id=model_id), ('li', 'models', 'v1'), method='get'
+            dict(params, id=model_id), ('cl', 'models', 'v1'), method='get'
         )
 
     def create(self, data, **params):
         return self.do_request(
-            dict(params, data=json.dumps(data)), ('li', 'models', 'v1')
+            dict(params, data=json.dumps(data)), ('cl', 'models', 'v1')
         )
 
     def update(self, data, model_id, **params):
         return self.do_request(
             dict(params, id=model_id, data=json.dumps(data)),
-            ('li', 'models', 'v1'), method='put'
+            ('cl', 'models', 'v1'), method='put'
         )
 
     def delete(self, model_id, **params):
         return self.do_request(
-            dict(params, id=model_id), ('li', 'models', 'v1'), method='delete'
+            dict(params, id=model_id), ('cl', 'models', 'v1'), method='delete'
         )
 
     def list(self):
         return self.do_request(
-            {}, ('li', 'models', 'v1'), method='get'
+            {}, ('cl', 'models', 'v1'), method='get'
         )
 
     def _get_uri_tokens(self):
