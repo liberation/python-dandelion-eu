@@ -8,8 +8,7 @@ from dandelion import DataTXT, default_config, DandelionException
 
 class TestDatatxt(TestCase):
     def setUp(self):
-        default_config['app_id'] = os.environ['APP_ID']
-        default_config['app_key'] = os.environ['APP_KEY']
+        default_config['token'] = os.environ['TOKEN']
         self.datatxt = DataTXT()
 
     def test_nex(self):
