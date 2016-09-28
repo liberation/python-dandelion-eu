@@ -16,45 +16,32 @@ from dandelion.utils import AttributeDict
 class TestDefaultConfiguration(TestCase):
     def tearDown(self):
         # cleanup default config
-        for key in ['app_id', 'app_key']:
+        for key in ['token']:
             if key in default_config:
                 del default_config[key]
 
-    def test_can_set_app_id(self):
-        default_config['app_id'] = os.environ['APP_ID']
-
-        with self.assertRaises(DandelionException) as context:
-            Datagem('administrative-regions')
-
-        self.assertEqual(
-            context.exception.message, 'Param "app_key" is required'
-        )
-
-    def test_can_set_app_key(self):
-        default_config['app_key'] = os.environ['APP_KEY']
-
-        with self.assertRaises(DandelionException) as context:
-            Datagem('administrative-regions')
-
-        self.assertEqual(
-            context.exception.message, 'Param "app_id" is required'
+    def test_can_set_token(self):
+        default_config['token'] = os.environ['TOKEN']
+        dg = Datagem('administrative-regions')
+        self.assertEquals(
+            dg.token,
+            os.environ['TOKEN']
         )
 
     def test_can_authenticate(self):
         with self.assertRaises(DandelionException) as context:
             Datagem('administrative-regions')
         self.assertEqual(
-            context.exception.message, 'Param "app_id" is required'
+            context.exception.message, 'Param "token" is required'
         )
 
         with self.assertRaises(DandelionException) as context:
             DataTXT()
         self.assertEqual(
-            context.exception.message, 'Param "app_id" is required'
+            context.exception.message, 'Param "token" is required'
         )
 
-        default_config['app_id'] = os.environ['APP_ID']
-        default_config['app_key'] = os.environ['APP_KEY']
+        default_config['token'] = os.environ['TOKEN']
 
         Datagem('administrative-regions')
         DataTXT()
@@ -103,11 +90,11 @@ class TestBaseClass(TestCase):
             self._make_class(require_auth=True, implement_abstract=True)()
 
         self.assertEqual(
-            context.exception.message, 'Param "app_id" is required'
+            context.exception.message, 'Param "token" is required'
         )
 
         obj = self._make_class(require_auth=True, implement_abstract=True)(
-            app_id='aa', app_key='bb'
+            token='aa'
         )
         with patch.object(obj, '_do_raw_request') as _do_raw_request:
             _do_raw_request.return_value.ok = True
@@ -116,7 +103,7 @@ class TestBaseClass(TestCase):
 
             _do_raw_request.assert_called_once_with(
                 'https://api.dandelion.eu',
-                {'foo': 'bar', '$app_id': 'aa', '$app_key': 'bb'},
+                {'foo': 'bar', 'token': 'aa'},
                 'post'
             )
 

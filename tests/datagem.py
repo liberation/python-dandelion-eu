@@ -11,8 +11,7 @@ from dandelion.datagem import DatagemManager
 
 class TestDatagemBase(TestCase):
     def setUp(self):
-        default_config['app_id'] = os.environ['APP_ID']
-        default_config['app_key'] = os.environ['APP_KEY']
+        default_config['token'] = os.environ['TOKEN']
         self.datagem = Datagem('administrative-regions')
 
     @staticmethod
@@ -32,7 +31,7 @@ class TestDatagem(TestDatagemBase):
             acheneID=self._achene('05a192433bede90cd0f12652b1a12c428cb253d5')
         ):
             self.assertEqual(
-                item, dict(name='Trento', population={'2011': 114063})
+                item, dict(name='Trento', population={u'2001': None, '2011': 114063})
             )
 
     def test_select_concat(self):
@@ -41,7 +40,7 @@ class TestDatagem(TestDatagemBase):
             acheneID=self._achene('05a192433bede90cd0f12652b1a12c428cb253d5')
         ):
             self.assertEqual(
-                item, dict(population={'2011': 114063})
+                item, dict(population={u'2001': None, '2011': 114063})
             )
 
     def test_select_empty(self):
