@@ -14,7 +14,7 @@ class DandelionConfig(dict):
     """ class for storing the default dandelion configuration, such
      as authentication parameters
     """
-    ALLOWED_KEYS = ['token']
+    ALLOWED_KEYS = ['token', 'model']
 
     def __setitem__(self, key, value):
         if not key in self.ALLOWED_KEYS:
@@ -56,7 +56,7 @@ class BaseDandelionRequest(object):
         from dandelion import default_config
         self.uri = self._get_uri(host=kwargs.get('host'))
         self.token = kwargs.get('token', default_config.get('token'))
-
+        self.model = kwargs.get('model', default_config.get('model'))
         self.requests = requests.session()
         self.cache = kwargs.get('cache', NoCache())
 

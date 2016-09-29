@@ -3,11 +3,13 @@
 import json
 
 from dandelion.base import BaseDandelionRequest
+from dandelion.base import MissingParameterException
 
 
 class DataTXT(BaseDandelionRequest):
     """ class for accessing the dataTXT family
     """
+
     def nex(self, text, **params):
         if 'min_confidence' not in params:
             params['min_confidence'] = 0.6
@@ -26,8 +28,10 @@ class DataTXT(BaseDandelionRequest):
         )
 
     def cl(self, text, **params):
+        if not self.model:
+            raise MissingParameterException("model")
         return self.do_request(
-            dict(params, text=text), ('cl', 'v1')
+            dict(params, text=text, model=self.model), ('cl', 'v1')
         )
 
     def _get_uri_tokens(self):
